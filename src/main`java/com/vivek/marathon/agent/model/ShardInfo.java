@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * Created by vivek.kothari
+ */
 public class ShardInfo {
 
-	private String shardId;
+    private String shardId;
 
 }
