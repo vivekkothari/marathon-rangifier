@@ -5,16 +5,19 @@ import lombok.Data;
 
 @Data
 @Builder
+/**
+ * Created by vivek.kothari
+ */
 public class AgentConfig {
 
-	private String marathonEndpoint;
+    private String marathonEndpoint;
 
-	private String zkConnectionString;
+    private String zkConnectionString;
 
-	private String namespace = "olacabs";
+    private String namespace = "olacabs";
 
-	private String environment;
+    private String environment;
 
-	private int refreshInterval = 5;
+    private int refreshInterval = 5;
 
 }

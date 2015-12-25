@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ServiceInstance {
-	private String hostName;
-	private int port;
-	private String serviceName;
+    private String hostName;
+    private int port;
+    private String serviceName;
 }

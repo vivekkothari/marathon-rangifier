@@ -16,52 +16,58 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
+/**
+ * Created by vivek.kothari
+ */
 public class ManagedServiceRegistry {
 
-	private final MarathonServiceClient marathonServiceClient;
+    private final MarathonServiceClient marathonServiceClient;
 
-	private final ServiceProviderBuilder serviceProviderBuilder;
+    private final ServiceProviderBuilder serviceProviderBuilder;
 
-	private ConcurrentMap<ServiceInstance, ServiceProvider<ShardInfo>> instances = new ConcurrentHashMap<>();
+    private ConcurrentMap<ServiceInstance, ServiceProvider<ShardInfo>> instances = new ConcurrentHashMap<>();
 
-	public void start() {
-		Set<ServiceInstance> serviceInstances = marathonServiceClient.getInstances();
-		Predicate<? super ServiceInstance> staleInstancePredicate = serviceInstance -> !serviceInstances.contains(
-				serviceInstance);
-		instances.entrySet()
-				 .stream()
-				 .forEach(entry -> {
-					 if (staleInstancePredicate.test(entry.getKey())) {
-						 log.info("stopping old instance {}", entry.getKey());
-						 this.stop(entry.getValue());
-					 }
-				 });
-		instances.keySet().removeIf(staleInstancePredicate);
-		serviceInstances.removeAll(instances.keySet());
-		Map<ServiceInstance, ServiceProvider<ShardInfo>> serviceProviderMap = serviceInstances.stream()
-																							  .collect(Collectors.toMap(Function.identity(),
-																														serviceProviderBuilder::buildServiceProvider));
-		serviceProviderMap.values().forEach(provider -> {
-			try {
-				log.info("starting service " + provider.getServiceNode());
-				provider.start();
-			} catch (Exception e) {
-				log.error("error starting");
-			}
-		});
-		instances.putAll(serviceProviderMap);
-	}
+    public void start() {
+        Set<ServiceInstance> serviceInstances = marathonServiceClient.getInstances();
+        Predicate<? super ServiceInstance> staleInstancePredicate = serviceInstance -> !serviceInstances.contains(
+                serviceInstance);
+        instances.entrySet()
+                .stream()
+                .forEach(entry -> {
+                    if (staleInstancePredicate.test(entry.getKey())) {
+                        log.info("stopping old instance {}", entry.getKey());
+                        this.stop(entry.getValue());
+                    }
+                });
+        instances.keySet()
+                .removeIf(staleInstancePredicate);
+        serviceInstances.removeAll(instances.keySet());
+        Map<ServiceInstance, ServiceProvider<ShardInfo>> serviceProviderMap = serviceInstances.stream()
+                .collect(Collectors.toMap(Function.identity(),
+                                          serviceProviderBuilder::buildServiceProvider));
+        serviceProviderMap.values()
+                .forEach(provider -> {
+                    try {
+                        log.info("starting service " + provider.getServiceNode());
+                        provider.start();
+                    } catch (Exception e) {
+                        log.error("error starting");
+                    }
+                });
+        instances.putAll(serviceProviderMap);
+    }
 
-	public void stop() {
-		instances.values().forEach(this::stop);
-	}
+    public void stop() {
+        instances.values()
+                .forEach(this::stop);
+    }
 
-	private void stop(ServiceProvider<ShardInfo> provider) {
-		try {
-			provider.stop();
-		} catch (Exception e) {
-			log.error("error stopping");
-		}
-	}
+    private void stop(ServiceProvider<ShardInfo> provider) {
+        try {
+            provider.stop();
+        } catch (Exception e) {
+            log.error("error stopping");
+        }
+    }
 
 }

@@ -18,27 +18,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ServiceProviderBuilder {
 
-	private final AgentConfig agentConfig;
-	private final ObjectMapper mapper;
+    private final AgentConfig agentConfig;
+    private final ObjectMapper mapper;
 
-	public ServiceProvider<ShardInfo> buildServiceProvider(ServiceInstance serviceInstance) {
-		log.info("Building serviceProvider for " + serviceInstance);
-		return ServiceProviderBuilders.<ShardInfo>shardedServiceProviderBuilder()
-				.withConnectionString(agentConfig.getZkConnectionString())
-				.withNamespace(agentConfig.getNamespace())
-				.withServiceName(serviceInstance.getServiceName())
-				.withSerializer(data -> {
-					try {
-						return mapper.writeValueAsBytes(data);
-					} catch (final JsonProcessingException ignore) {
-						log.error("Error - ", ignore);
-					}
-					return null;
-				})
-				.withHostname(serviceInstance.getHostName())
-				.withPort(serviceInstance.getPort())
-				.withNodeData(new ShardInfo(agentConfig.getEnvironment()))
-				.withHealthcheck(() -> HealthcheckStatus.healthy)
-				.buildServiceDiscovery();
-	}
+    public ServiceProvider<ShardInfo> buildServiceProvider(ServiceInstance serviceInstance) {
+        log.info("Building serviceProvider for " + serviceInstance);
+        return ServiceProviderBuilders.<ShardInfo>shardedServiceProviderBuilder()
+                .withConnectionString(agentConfig.getZkConnectionString())
+                .withNamespace(agentConfig.getNamespace())
+                .withServiceName(serviceInstance.getServiceName())
+                .withSerializer(data -> {
+                    try {
+                        return mapper.writeValueAsBytes(data);
+                    } catch (final JsonProcessingException ignore) {
+                        log.error("Error - ", ignore);
+                    }
+                    return null;
+                })
+                .withHostname(serviceInstance.getHostName())
+                .withPort(serviceInstance.getPort())
+                .withNodeData(new ShardInfo(agentConfig.getEnvironment()))
+                .withHealthcheck(() -> HealthcheckStatus.healthy)
+                .buildServiceDiscovery();
+    }
 }
