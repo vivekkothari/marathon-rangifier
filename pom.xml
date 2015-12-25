@@ -113,7 +113,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <imageName>artifactory.corp.olacabs.com:5002/marathon-rangifier:${project.version}</imageName>
+                            <imageName>marathon-rangifier:${project.version}</imageName>
                             <dockerDirectory>${project.basedir}</dockerDirectory>
                             <serverId>docker</serverId>
                             <resources>
