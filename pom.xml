@@ -22,6 +22,15 @@
             <url>https://clojars.org/repo</url>
         </repository>
     </distributionManagement>
+    
+    <repositories>
+        <repository>
+            <id>clojars</id>
+            <name>Clojars repository</name>
+            <url>https://clojars.org/repo</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
