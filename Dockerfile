@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER <vivek.kothari [at] olacabs.com>
+MAINTAINER Vivek Kothari <vivekkothari2304 [at] gmail.com>
 
 RUN \
   apt-get install -y --no-install-recommends software-properties-common \
