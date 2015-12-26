@@ -119,7 +119,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <imageName>marathon-rangifier:${project.version}</imageName>
+                            <imageName>vivekkothari2304/marathon-rangifier:${project.version}</imageName>
                             <dockerDirectory>${project.basedir}</dockerDirectory>
                             <serverId>docker</serverId>
                             <resources>
