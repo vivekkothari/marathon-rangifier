@@ -1,0 +1,16 @@
+---
+version: 2
+updates:
+  # Maintain dependencies for Gradle
+  - package-ecosystem: gradle
+    directory: "/"
+    schedule:
+      interval: weekly
+      time: "23:30"
+    open-pull-requests-limit: 50
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
